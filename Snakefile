@@ -8,8 +8,8 @@ HTTP = HTTPRemoteProvider()
 #if not exists("config.yaml"):
 #    copyfile("config.default.yaml", "config.yaml")
 
-configfile: config["configfile"] #"config.yaml"
-
+#configfile: config["configfile"] #"config.yaml"
+configfile: "config.test.yaml"
 
 wildcard_constraints:
     lv="[a-z0-9\.]+",
@@ -36,9 +36,12 @@ CDIR = config['costs_dir']
 
 
 subworkflow pypsaeur:
-    workdir: "../pypsa-eur2"
-    snakefile: "../pypsa-eur2/Snakefile"
-    configfile: "../pypsa-eur2/config.yaml"
+    #workdir: "../pypsa-eur2"
+    #snakefile: "../pypsa-eur2/Snakefile"
+    #configfile: "../pypsa-eur2/config.yaml"
+    workdir: "../pypsa-eur"
+    snakefile: "../pypsa-eur/Snakefile"
+    configfile: "../pypsa-eur/config.yaml"
 
 
 if config['mga']:

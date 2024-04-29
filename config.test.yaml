@@ -5,7 +5,7 @@ logging_level: INFO
 results_dir: results/
 summary_dir: results
 costs_dir: ../technology-data/outputs/
-run: termination_condition # use this to keep track of runs with different settings
+run: Final_test_before_server_runV2 # use this to keep track of runs with different settings
 foresight: overnight # options are overnight, myopic, perfect (perfect is not yet implemented)
 # if you use myopic or perfect foresight, set the investment years in "planning_horizons" below
 mga: false #Turn modelling to generate alternatives on/off
@@ -17,15 +17,49 @@ scenario:
     - ''
   lv: # allowed transmission line volume expansion, can be any float >= 1.0 (today) or "opt"
     - 1.5
+#    - 2
   clusters: # number of nodes in Europe, any integer between 37 (1 node per country-zone) and several hundred
     - 37
+    #- 60
   opts: # only relevant for PyPSA-Eur
     - ''
   sector_opts: # this is where the main scenario settings are
-#    - Co2Lm0p1-631H-H-I-T-A-B0p0Im-High-seq650
-    - Co2Lm0p1-500H-H-I-T-A-B0p0-Med-seq600
-    - Co2Lm0p1-500H-H-I-T-A-B0p0-Med-seq2000
-#    - Co2L1p0-631H-H-I-T-A-B0p0Im-High-seq0
+#    - Co2L0p0-500H-B0p0Im-Med-seq200
+#    - Co2L0p0-500H-H-B0p0Im-Med-seq200
+#    - Co2L0p0-500H-H-I-B0p0Im-Med-seq200
+
+    - Co2Lm0p1-500H-H-I-T-A-B0p0-Med-seq600-solar+p3
+    - Co2Lm0p1-500H-H-I-T-A-B0p0-Med-seq2000-solar+p3 #-solar+p3 Add this
+    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-Med-seq600-solar+p3
+    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-Med-seq2000-solar+p3
+    - Co2Lm0p0-500H-H-I-T-A-B0p0-Med-seq600-solar+p3
+    - Co2Lm0p0-500H-H-I-T-A-B0p0-Med-seq2000-solar+p3 #-solar+p3 Add this
+    - Co2Lm0p0-500H-H-I-T-A-B0p0Im-Med-seq600-solar+p3
+    - Co2Lm0p0-500H-H-I-T-A-B0p0Im-Med-seq2000-solar+p3
+
+#    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-Med-seq590
+#    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-Med-seq600
+#    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-Med-seq570
+#    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-Med-seq560
+#    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-Med-seq600-solar+p3
+#    - Co2L0p0-500H-H-B0p0-Med-seq130-solar+p3
+#    - Co2L0p0-500H-H-I-B0p0-Med-seq130-solar+p3
+#    - Co2L0p0-500H-H-I-T-A-B0p0-Med-seq130-solar+p3-nuclear+c0.5
+#    - Co2L0p0-500H-H-B0p0-Med-seq130-solar+p3-nuclear+c0.5
+#    - Co2L0p0-500H-H-I-B0p0-Med-seq130-solar+p3-nuclear+c0.5
+#    - Co2L0p0-500H-H-I-T-A-B0p0Im-Med-seq130-solar+p3-nuclear+c0.5
+#    - Co2L0p0-500H-H-B0p0Im-Med-seq130-solar+p3-nuclear+c0.5
+#    - Co2L0p0-500H-H-I-B0p0Im-Med-seq130-solar+p3-nuclear+c0.5
+#    - Co2L0p0-500H-H-I-T-A-B0p0-Med-seq130-solar+p3-nuclear+c0.3
+#    - Co2L0p0-500H-H-B0p0-Med-seq130-solar+p3-nuclear+c0.3
+#    - Co2L0p0-500H-H-I-B0p0-Med-seq130-solar+p3-nuclear+c0.3
+#    - Co2L0p0-500H-H-I-T-A-B0p0-Med-seq900-solar+p3-onwind+p3-nuclear+c0.54
+#    - Co2L0p0-500H-H-I-T-A-B0p0-High-seq900-solar+p3-onwind+p3-nuclear+c0.54
+#    - Co2L0p0-500H-H-I-T-A-B0p0Im-High-seq900-solar+p3-onwind+p3-nuclear+c0.54
+#    - Co2Lm0p1-500H-H-I-T-A-B1p0ImEq-Med-seq600
+#    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-Med-seq800
+#    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-Med-seq1000
+#    - Co2L0p0-500H-H-T-A-B0p0Im-Med-seq200
   # to really understand the options here, look in scripts/prepare_sector_network.py
   # Co2Lx specifies the CO2 target in x% of the 1990 values; default will give default (5%);
   # Co2L0p25 will give 25% CO2 emissions; Co2Lm0p05 will give 5% negative emissions
@@ -67,22 +101,28 @@ scenario:
 #    - Generator-VRE
 #    - Generator-wind
 #    - Generator-solar
-    - Generator-biomass
+#    - Generator-biomass
 #    - Link-H2 Electrolysis
 #    - Link-biomass CHP
 #    - Link-biomass to liquid
+    - Link-biofuels
 #    - Link-biomass industry
-#    - Link-CC
+    - Link-CC
+#    - Link-BECC
 #    - Store-co2 stored
   sense:
- #   - min
+    - min
     - max
   epsilon:
-#    - 0.01
-  #  - 0.02
- #   - 0.05
- #   - 0.5
-    - 0.2
+#    - 0.005
+    - 0.01
+#    - 0.02
+    #- 0.03
+    - 0.05
+    - 0.1
+    - 0.15
+#    - 0.2
+    #- 0.25
 ###-----------------
 
 # CO2 budget as a fraction of 1990 emissions
@@ -175,7 +215,8 @@ biomass:
   import price: 15 #EUR/GJ
   beccs: true
   mediumT industry biomass: true
-  lowT industry steam biomass: true
+  '>120C industry steam biomass': true
+  nobiomass: false #true to exclude biomass, else false
 
 
 solar_thermal:
@@ -203,7 +244,7 @@ sector:
     potential: 0.6  # maximum fraction of urban demand which can be supplied by district heating
      # increase of today's district heating demand to potential maximum district heating share
      # progress = 0 means today's district heating share, progress = 1 means maximum fraction of urban demand is supplied by district heating
-    progress: 1
+    progress: 0.5
       # 2020: 0.0
       # 2030: 0.3
       # 2040: 0.6
@@ -315,11 +356,12 @@ sector:
   co2_vent: true
   SMR: true
   industrial_steam_heat_pumps: false
+  industrial_steam_heat_pump_factor: 0.7
   industrial_steam_electric_boiler: true
   industrial_steam_methane: true
   gas_for_mediumT_industry: true
-  hydrogen_for_mediumT_industry: false
-  hydrogen_for_highT_industry: false
+  hydrogen_for_mediumT_industry: true
+  hydrogen_for_highT_industry: true
   co2_sequestration_potential: 1500  #MtCO2/a sequestration potential for Europe
   co2_sequestration_cost: 10   #EUR/tCO2 for transport and sequestration of CO2
   co2_network: false
@@ -330,13 +372,16 @@ sector:
     - nearshore  # within 50 km of sea
     # - offshore
   ammonia: true # can be false (no NH3 carrier), true (copperplated NH3), "regional" (regionalised NH3 without network)
-  use_fischer_tropsch_waste_heat: false
+  waste_heat_usage_share: 0.5
+  use_fischer_tropsch_waste_heat: true
   use_fuel_cell_waste_heat: true
-  use_biofuel_waste_heat: false
+  use_electrolysis_waste_heat: true
+  use_biofuel_waste_heat: true
+  use_dac_waste_heat: true
   electricity_distribution_grid: false
   electricity_distribution_grid_cost_factor: 1.0  #multiplies cost in data/costs.csv
   electricity_grid_connection: true  # only applies to onshore wind and utility PV
-  H2_network: true
+  H2_network: false
   gas_network: false
   H2_retrofit: false  # if set to True existing gas pipes can be retrofitted to H2 pipes
   # according to hydrogen backbone strategy (April, 2020) p.15
@@ -353,13 +398,36 @@ sector:
     oil: oil
     lignite: lignite
     nuclear: uranium
-  biomass_transport: false
+  biomass_transport: true
+  notransmission: false
   hvdc: true
   biomass_to_liquid: true
   biosng: true
   biomass_boiler: true
-
-
+  electrobiofuels: true
+  solid_biomass_powerboost_CC: false
+  
+  #Basecase set Ethylene, MEA and KOH to false
+  Ethylene: true
+  MEA: true
+  KOH: true
+  PEI: true
+  EO: true
+  PEI silica sorbent: true
+  coal_cc: true  #Just for model flexibility
+  
+  
+  KOH_consumption: -2.8e-3 #No bulk included #-6.4e-3 with bulk #higher
+  #KOH_consumption: -0.4e-3 #No bulk included #-0.9e-3 with bulk #lower
+  #KOH_consumption: 0 #if no solvent
+  
+  PEI_consumption: -14e-3 #higher
+  #PEI_consumption: -2.3e-3 #lower
+  #PEI_consumption: 0 #if no solvent
+  
+  MEA_consumption: 3.98e-3 #Higher  #Set to 0 if MEA is set to false (will turn efficiency of MEA consumption to 0)
+  #MEA_consumption: 0.27e-3 #Lower
+  #MEA_consumption: 0
 industry:
   St_primary_fraction: # fraction of steel produced via primary route versus secondary route (scrap+EAF); today fraction is 0.6
     2020: 0.6
@@ -387,6 +455,7 @@ industry:
     2040: 0.3
     2045: 0.25
     2050: 0.2
+  MWh_NH3_per_MWh_H2_cracker: 1.46 #Ammonia from newest technology data
   MWh_NH3_per_tNH3: 5.166 # LHV
   MWh_CH4_per_tNH3_SMR: 10.8 # 2012's demand from https://ec.europa.eu/docsroom/documents/4165/attachments/1/translations/en/renditions/pdf
   MWh_elec_per_tNH3_SMR: 0.7 # same source, assuming 94-6% split methane-elec of total energy demand 11.5 MWh/tNH3
@@ -453,14 +522,15 @@ solving:
 
   solver:
     name: gurobi
-    threads: 64
+    threads: 3
     method: 2 # barrier
     crossover: 0
-    BarConvTol: 1.e-6
+    BarConvTol: 1.e-5
     Seed: 123
     AggFill: 0
     PreDual: 0
     GURO_PAR_BARDENSETHRESH: 200
+    BarHomogeneous: 1
     #FeasibilityTol: 1.e-6
 
     #name: cplex
@@ -698,15 +768,9 @@ plotting:
     waste: '#e3d37d'
     other: '#000000'
     # millinger
-    lowT process steam solid biomass: "green"
-    lowT process steam solid biomass CC: "green"
-    lowT process steam methane: "yellow"
-    lowT process steam methane CC: "yellow"
-    lowT process steam H2: "blue"
-    lowT process steam: "#555555"
     BioSNG: "#123456"
     BioSNG CC: "#123456"
-    biomass to liquid: "gold"
+    biomass to liquid: "orange"
     biomass to liquid CC: "gold"
     electrofuel: "#832473"
     liquid biofuel: "#384257"
@@ -733,8 +797,16 @@ plotting:
     gas for highT industry CC: '#333333'
     hydrogen for mediumT industry: '#993666'
     hydrogen for highT industry: '#993333'
-    lowT process steam electricity: "pink"
-    lowT process steam heat pump: "purple"
+    '>120C process steam solid biomass': "green"
+    '>120C process steam solid biomass CC': "green"
+    '>120C process steam methane': "yellow"
+    '>120C process steam methane CC': "yellow"
+    '>120C process steam H2': "blue"
+    '>120C process steam': "#555555"
+    '<120C process steam': "#777777"
+    '>120C process steam electricity': "pink"
+    '>120C process steam heat pump': "purple"
+    '<120C process steam heat pump': "purple"
     solid biomass for mediumT industry: '#009E60'
     solid biomass for mediumT industry CC: '#009E60'
     mediumT industry: "yellow"
@@ -744,3 +816,31 @@ plotting:
     municipal solid waste: "pink"
     waste incineration: "brown"
     waste incineration CC: "grey"
+    electrobiofuels: "red"
+    solid biomass district heat: "blue"
+    solid biomass district heat CC: "cyan"
+    gas CHP: 'blue'
+    gas CHP CC: '#993333'
+    hydrogen CHP: 'cyan'
+    solid biomass CHP: 'green'
+    solid biomass CHP CC: 'red'
+    solid biomass CHP powerboost CC: 'purple'
+    biogas CC: 'orange'
+    Chlor-alkali process: 'pink'
+        # ammonia ADDED NOW
+    NH3: '#46caf0'
+    ammonia: '#46caf0'
+    ammonia store: '#00ace0'
+    ammonia cracker: '#87d0e6'
+    Haber-Bosch: '#076987'
+    Ethylene steam cracking: '#993334'
+    MEA production: '#993335'
+    PEI silica sorbent production: '#993330'
+    EO production: '#983330'
+    L-DAC: '#CF7605'
+    S-DAC: '#973331'
+    MEA: '#D9FF0F'
+    KOH: '#983331'
+    EO: '#E40046'
+    PEI: '#0095E4'
+    Ethylene: '#FFE658'

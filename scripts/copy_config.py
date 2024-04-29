@@ -3,11 +3,12 @@ from shutil import copy
 import yaml
 
 files = {
-    snakemake.config['configfile']: "config.yaml",
+    #snakemake.config['configfile']: "config.yaml",
+    "config.yaml": "config.yaml",
     "Snakefile": "Snakefile",
     "scripts/solve_network.py": "solve_network.py",
     "scripts/prepare_sector_network.py": "prepare_sector_network.py",
-    "../pypsa-eur2/config.yaml": "config.pypsaeur.yaml"
+    "../pypsa-eur/config.yaml": "config.pypsaeur.yaml"
 }
 
 if __name__ == '__main__':
@@ -16,7 +17,7 @@ if __name__ == '__main__':
         snakemake = mock_snakemake('copy_config')
 
     basepath = snakemake.config['summary_dir'] + '/' + snakemake.config['run'] + '/configs/'
-    print(snakemake.config['configfile'])
+    #print(snakemake.config['configfile'])
 
     for f, name in files.items():
         print(f)
