@@ -1090,7 +1090,7 @@ def add_ethylene(n,costs):
         efficiency=1/(80.6/3.6), # 80.6 is based on the fuel and also reactant part of producing ethylene unit t_hvc/MWh_naphtha using mass allocation
         efficiency2=-(0.55/3.6)/(80.6/3.6),     #Electricity scaled down to account for allocation
         
-        efficiency3= 1.7/(80.6/3.6), #t_CO2/MWh_naphtha 
+        efficiency3= 1.7/(80.6/3.6), #t_CO2/MWh_naphtha (Higher than the one proposed by Neumann in pypsa-eur)
         capital_cost = costs.at['Ethylene', 'fixed'], #1200/(80.6/3.6)*8760,      #Assume that DECHEMA value is based on 1200 Euro/t_HVC/year
         marginal_cost = 180/(80.6/3.6), #244    #Taken from levelized cost of prodution steam cracking based on average around the world. (Add source here later)
         lifetime=costs.at['Ethylene', 'lifetime']
@@ -1169,25 +1169,45 @@ def add_MEA(n):
 #        efficiency4= - 0.5556e-3,
 #        captial_cost=1000000
 #        )
+
+#    n.madd("Link",
+#        spatial.nodes + " MEA production",
+#        bus0=spatial.nodes,
+#        bus1="EU MEA",
+#        bus2=spatial.ammonia.nodes,
+#        bus3="EU EO",
+#        bus4=spatial.nodes+ " >120C process steam",
+#        carrier="MEA productionf",
+#        p_nom_extendable=True,
+#        efficiency= 1/0.333,         #Based on ecoinvent paper
+#        efficiency2= -0.788/0.333,
+#        efficiency3= - 0.816/0.333,
+#        efficiency4= - 2/3.6/0.333,
+#        #capital_cost=1000000
+#        marginal_cost = 382.76    #Dollar per MWh based on TAC found in destillation paper "Simulation and energy consumption evalutaion of reactive distillation process for ethanolamine production" including allocation by mass
+#        )
+        
+        
     n.madd("Link",
         spatial.nodes + " MEA production",
-        bus0=spatial.nodes,
+        bus0=spatial.nodes+ " >120C process steam",
         bus1="EU MEA",
         bus2=spatial.ammonia.nodes,
         bus3="EU EO",
-        bus4=spatial.nodes+ " >120C process steam",
-        carrier="MEA productionf",
+        
+        carrier="MEA production",
         p_nom_extendable=True,
-        efficiency= 1/0.333,         #Based on ecoinvent paper
-        efficiency2= -0.788/0.333,
-        efficiency3= - 0.816/0.333,
-        efficiency4= - 2/3.6/0.333,
-        #capital_cost=1000000
-        marginal_cost = 382.76    #Dollar per MWh based on TAC found in destillation paper "Simulation and energy consumption evalutaion of reactive distillation process for ethanolamine production" including allocation by mass
+        efficiency= 1/1.96,         
+        efficiency2= -0.25*5.166*(1/1.96), #5.166 from MWh_Nh3_per_t_Nh3 in config file
+        efficiency3= - 0.75*(1/1.96),
+        
+        capital_cost=costs.at['MEA production', 'fixed']*(1/1.96),
+        
+        marginal_cost=costs.at['MEA production', 'VOM'],
+        lifetime=costs.at['MEA production','lifetime'] 
+        #marginal_cost = 382.76    #Dollar per MWh based on TAC found in destillation paper "Simulation and energy consumption evalutaion of reactive distillation process for ethanolamine production" including allocation by mass
         )
         
-        
-    	
 
     n.add("Store",
     	"EU MEA",
