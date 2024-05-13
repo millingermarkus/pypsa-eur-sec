@@ -1126,7 +1126,8 @@ def add_EO(n):
         efficiency2= - 0.825/0.33,
        
         capital_cost=costs.at['EO production', 'fixed'], #38237400*0.779   #Based on investment cost in report of  "Is the Liquid-Phase H2O2-Based Ethylene Oxide Process More Economical and Greener Than the Gas-Phase O2-Based Silver-Catalyzed Process?"
-        lifetime=costs.at['EO production', 'lifetime']
+        lifetime=costs.at['EO production', 'lifetime'],
+        marginal_cost=costs.at['EO production', 'VOM']
         ) 
        
        
@@ -1728,13 +1729,13 @@ def add_storage_and_grids(n, costs):
             bus1=nodes + " H2",
             bus3="co2 atmosphere",
             bus2=spatial.co2.nodes,
-            bus5="EU MEA",     #Adding MEA consumption
+            #bus5="EU MEA",     #Adding MEA consumption
             p_nom_extendable=True,
             carrier="SMR CC",
             efficiency=costs.at["SMR CC", "efficiency"],
             efficiency3=costs.at['gas', 'CO2 intensity'] * (1 - options["cc_fraction"]),
             efficiency2=costs.at['gas', 'CO2 intensity'] * options["cc_fraction"],
-            efficiency5=-options["MEA_consumption"] * costs.at["gas", "CO2 intensity"] * options["cc_fraction"], #3.98e-3,
+            #efficiency5=-options["MEA_consumption"] * costs.at["gas", "CO2 intensity"] * options["cc_fraction"], #3.98e-3,
             capital_cost=costs.at["SMR CC", "fixed"],
             lifetime=costs.at['SMR CC', 'lifetime']
         )
@@ -2711,7 +2712,7 @@ def add_biomass(n, costs, beccs, biomass_import_price):
                bus1=nodes,
                bus2="co2 stored",
                bus3="co2 atmosphere",
-               bus4= spatial.nodes +  " MEA",
+               bus4= "EU MEA",
                carrier="solid biomass to electricity CC",
                p_nom_extendable=True,
                capital_cost=0.7 * costs.at['central solid biomass CHP CC', 'fixed'] * costs.at[
