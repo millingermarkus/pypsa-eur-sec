@@ -5,7 +5,7 @@ logging_level: INFO
 results_dir: results/
 summary_dir: results
 costs_dir: ../technology-data/outputs/
-run: Hopefully_final_runV3 # use this to keep track of runs with different settings
+run: V6 # use this to keep track of runs with different settings
 foresight: overnight # options are overnight, myopic, perfect (perfect is not yet implemented)
 # if you use myopic or perfect foresight, set the investment years in "planning_horizons" below
 mga: false #Turn modelling to generate alternatives on/off
@@ -417,7 +417,8 @@ sector:
   coal_cc: true  #Just for model flexibility
   
   
-  KOH_consumption: -2.8e-3 #No bulk included #-6.4e-3 with bulk #higher
+  #KOH_consumption: -2.8e-3 #No bulk included #-6.4e-3 with bulk #higher
+  KOH_consumption: -1000000000
   #KOH_consumption: -0.4e-3 #No bulk included #-0.9e-3 with bulk #lower
   #KOH_consumption: 0 #if no solvent
   

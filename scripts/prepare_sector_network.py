@@ -617,7 +617,7 @@ def add_PEI(n):
         p_nom_extendable=True,
         carrier="PEI silica sorbent production",
         capital_cost= costs.at['PEI production', 'fixed'], #1000000, #1018.75 from S&P estimation for plant of 320 kt/yr and 326 M$ (CONVERT TO EURO) This was for Ethylene oxide and not PEI    #1000000
-        marginal_cost= 0.70/0.18,
+        marginal_cost= costs.at['PEI production', 'VOM'], #2278/0.18, #0.70/0.18,
         lifetime=costs.at['PEI production', 'lifetime']
         )
         
