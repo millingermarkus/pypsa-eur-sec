@@ -571,7 +571,7 @@ def add_KOH(n):
 	bus3= spatial.nodes + " >120C process steam",
 	p_nom_extendable=True,
 	carrier= "Chlor-alkali process",
-	efficiency= 0.001, #0.2941,
+	efficiency= 0.325, #0.2941,
 		#efficiency=costs.at["electrolysis", "efficiency"],
 	efficiency2 = 0.39,
 	efficiency3 = - 0.86/2.88,
@@ -713,7 +713,7 @@ def add_dac(n, costs):
             efficiency2=min(1,options["cc_fraction"] / 0.9),#Set to a baseline of 1 for DAC when cc_fraction is >=0.9,
             efficiency3=  - costs.at['liquid direct air capture', 'heat-input'],    #Heat input is based on the 2024 value for heat that was based on 2020 heat demand.
             efficiency5=  options["KOH_consumption"], #6.4e-3, #0.9e-3,    # KOH consumption based on report from (6.4 initially chosen as the higher value to be used, lower is 0.9)
-            p_nom_extendable=True,
+            p_nom_extendable=options['KOH_p_nom_extendable'],
             lifetime=costs.at['liquid direct air capture', 'lifetime']
             )
             
@@ -731,7 +731,7 @@ def add_dac(n, costs):
             efficiency2=min(1,options["cc_fraction"] / 0.9),#Set to a baseline of 1 for DAC when cc_fraction is >=0.9,
             efficiency3= - costs.at['liquid direct air capture', 'heat-input'],    #Heat input is based on the 2024 value for heat that was based on 2020 heat demand.
             #efficiency5= - 6.4e-3,    # KOH consumption based on report from (6.4 initially chosen as the higher value to be used, lower is 0.9)
-            p_nom_extendable=True,
+            p_nom_extendable=options['KOH_p_nom_extendable'],
             lifetime=costs.at['liquid direct air capture', 'lifetime']
             )
             
