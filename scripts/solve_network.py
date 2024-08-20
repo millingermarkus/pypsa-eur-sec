@@ -1,6 +1,7 @@
 """Solve network."""
 
 import pypsa
+import re
 
 import numpy as np
 import pandas as pd
@@ -275,6 +276,32 @@ def add_biofuel_constraint(n):
 
     define_constraints(n, lhs, sense, limit, 'Link', spec=name)
 
+
+def add_solid_biomass_constraint(n,sns):
+
+    options = snakemake.wildcards.sector_opts.split('-')
+    solid_biomass_limit = 0
+    for o in options:
+        if "solid" in o:
+            solid_biomass_limit = float(o[o.find("solid") + 5:]) * 1e6 #TWh -> MWh
+
+    hours = list(filter(re.compile(r'^\d+h$', re.IGNORECASE).search, opts))
+    hours = [int(s) for s in re.findall(r'\d+',hours[0])]
+
+    print('Adding solid biomass constraint of max. ', solid_biomass_limit / 1e6, 'TWh')
+
+    solid_biomass_i = n.generators.query('carrier == "solid biomass import" | carrier == "forest residues solid biomass" | carrier == "industry wood residues solid biomass" | carrier == "landscape care solid biomass"').index
+    solid_biomass_vars = get_var(n, "Generator", "p").loc[:, solid_biomass_i]
+
+    limit = solid_biomass_limit / hours[0]
+
+    lhs = linexpr((1,solid_biomass_vars)).sum().sum()
+    name = 'solid_biomass_limit'
+    sense = '<='
+
+    define_constraints(n, lhs, sense, limit, 'Generator', spec=name)
+
+
 def add_msw_full_usage(n):
     print('Adding MSW incineration constraint')
     wasteCHP_i = n.links.carrier.filter(regex='waste CHP').index
@@ -298,6 +325,9 @@ def extra_functionality(n, snapshots):
             print('adding biofuel constraints')
             add_msw_full_usage(n)
             add_biofuel_constraint(n)
+        if "solid" in o:
+            print('adding solid biomass constraint')
+            add_solid_biomass_constraint(n,snapshots)
         if 'CCL' in o:
             print('adding ccl constraints')
             add_ccl_constraints(n)
