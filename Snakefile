@@ -276,16 +276,16 @@ rule build_biomass_potentials:
         enspreso_biomass=HTTP.remote("https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/ENSPRESO/ENSPRESO_BIOMASS.xlsx", keep_local=True),
         nuts2="data/nuts/NUTS_RG_10M_2013_4326_LEVL_2.geojson", # https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/#nuts21
         regions_onshore=pypsaeur("resources/regions_onshore_elec_s{simpl}_{clusters}.geojson"),
-        nuts3_population="../pypsa-eur/data/bundle/nama_10r_3popgdp.tsv.gz",
-        swiss_cantons="../pypsa-eur/data/bundle/ch_cantons.csv",
-        swiss_population="../pypsa-eur/data/bundle/je-e-21.03.02.xls",
+        nuts3_population="../pypsa-eur2/data/bundle/nama_10r_3popgdp.tsv.gz",
+        swiss_cantons="../pypsa-eur2/data/bundle/ch_cantons.csv",
+        swiss_population="../pypsa-eur2/data/bundle/je-e-21.03.02.xls",
         country_shapes=pypsaeur('resources/country_shapes.geojson')
     output:
-        biomass_potentials_all='resources/biomass_potentials_all_s{simpl}_{clusters}_{sector_opts}.csv',
-        biomass_potentials='resources/biomass_potentials_s{simpl}_{clusters}_{sector_opts}.csv'
+        biomass_potentials_all='resources/biomass_potentials_all_s{simpl}_{clusters}.csv',
+        biomass_potentials='resources/biomass_potentials_s{simpl}_{clusters}_biovalue.csv'
     threads: 1
     resources: mem_mb=1000
-    benchmark: "benchmarks/build_biomass_potentials_s{simpl}_{clusters}_{sector_opts}"
+    benchmark: "benchmarks/build_biomass_potentials_s{simpl}_{clusters}_biovalue"
     script: 'scripts/build_biomass_potentials.py'
 
 
@@ -491,7 +491,7 @@ rule prepare_sector_network:
         avail_profile="resources/avail_profile_s{simpl}_{clusters}.csv",
         dsm_profile="resources/dsm_profile_s{simpl}_{clusters}.csv",
         co2_totals_name='resources/co2_totals.csv',
-        biomass_potentials='resources/biomass_potentials_s{simpl}_{clusters}_{sector_opts}.csv',
+        biomass_potentials='resources/biomass_potentials_s{simpl}_{clusters}_biovalue.csv',
         co2="data/eea/UNFCCC_v23.csv",
         heat_profile="data/heat_load_profile_BDEW.csv",
         costs=CDIR + "costs_{}.csv".format(config['costs']['year']) if config["foresight"] == "overnight" else CDIR + "costs_{planning_horizons}.csv",

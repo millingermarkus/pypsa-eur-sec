@@ -198,19 +198,7 @@ if __name__ == "__main__":
 
     config = snakemake.config['biomass']
     year = config["year"]
-    opts = snakemake.wildcards.sector_opts.split('-')
-    print('Options: ', opts)
-
-    # scenario = "Med"
-    if "High" in opts:
-        scenario = "ENS_High"
-    if "Med" in opts:
-        scenario = "ENS_Med"
-    if "Low" in opts:
-        scenario = "ENS_Low"
-
-    print('Biomass scenario is: ', scenario)
-    # scenario = config["scenario"]
+    scenario = config["scenario"]
 
     enspreso = enspreso_biomass_potentials(year, scenario)
 
@@ -228,6 +216,24 @@ if __name__ == "__main__":
 
     grouper = {v: k for k, vv in config["classes"].items() for v in vv}
     df = df.groupby(grouper, axis=1).sum()
+    dfTemp=df
+
+    scenario_digestible = config["scenario_digestible"]
+    if scenario_digestible != scenario:
+        print('Setting digestible biomass potentials to medium')
+        enspreso_dig = enspreso_biomass_potentials(year, scenario_digestible)
+
+        enspreso_dig = disaggregate_nuts0(enspreso_dig)
+
+        df_dig_nuts2 = gpd.GeoDataFrame(nuts2.geometry).join(enspreso_dig)
+
+        df_dig = convert_nuts2_to_regions(df_dig_nuts2, regions)
+
+        df_dig = df_dig.groupby(grouper, axis=1).sum()
+
+        digestibles = ['manureslurry', 'municipal solid waste', 'sewage sludge', 'straw']
+        df = df.drop(labels=digestibles, axis='columns')
+        df[digestibles] = df_dig[digestibles]
 
     df *= 1e6  # TWh/a to MWh/a
     df.index.name = "MWh/a"
