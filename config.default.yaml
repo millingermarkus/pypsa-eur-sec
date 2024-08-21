@@ -22,7 +22,7 @@ scenario:
   opts: # only relevant for PyPSA-Eur
     - ''
   sector_opts: # this is where the main scenario settings are
-    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-High-seq600-solar+p3
+    - Co2Lm0p1-500H-H-I-T-A-B0p0Im-seq600-solar+p3
   # to really understand the options here, look in scripts/prepare_sector_network.py
   # Co2Lx specifies the CO2 target in x% of the 1990 values; default will give default (5%);
   # Co2L0p25 will give 25% CO2 emissions; Co2Lm0p05 will give 5% negative emissions
@@ -144,7 +144,8 @@ energy:
 
 biomass:
   year: 2040
-  scenario: High
+  scenario: ENS_Med
+  scenario_digestible: ENS_Med
   classes:
     manureslurry:
       - Manure solid, liquid
