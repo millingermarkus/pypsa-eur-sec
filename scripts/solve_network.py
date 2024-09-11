@@ -283,7 +283,7 @@ def add_biomass_constraint(n):
     biomass_limit = 0
     for o in options:
         if "biomass" in o:
-            biomass_limit = float(o[o.find("biomass") + 7:]) * 1e6 #TWh -> MWh
+            biomass_limit = float(o[o.find("biomass") + 7:])# * 1e6 #TWh -> MWh
 
     hours = list(filter(re.compile(r'^\d+h$', re.IGNORECASE).search, opts))
     hours = [int(s) for s in re.findall(r'\d+',hours[0])]
